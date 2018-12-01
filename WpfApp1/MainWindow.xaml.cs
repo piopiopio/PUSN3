@@ -29,6 +29,7 @@ namespace WpfApp1
             MainViewModel1.RotationSimulator1.OnLoad();
             var Width = 1500;
             var Height = 900;
+            
 
             GL.Viewport(0, 0, Width, Height);
 
@@ -124,7 +125,6 @@ namespace WpfApp1
             //  GL.Viewport(0, 0, Width, Height);
             MainViewModel1.RotationSimulator1.OnUpdateFrame();
             MainViewModel1.RotationSimulator1.OnRenderFrame(_alphaX, _alphaY, _alphaZ);
-
 
             glControl.SwapBuffers();
 
