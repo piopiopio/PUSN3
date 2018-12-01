@@ -1,0 +1,142 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+       
+
+        mc:Ignorable="d"
+        
+        Title="MainWindow" WindowState="Maximized" MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseWheel="Window_MouseWheel">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+
+        </Grid.RowDefinitions>
+        <!--<WindowsFormsHost Name="OpentkWindow" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" Initialized="OpenTkControl_Initialized" SizeChanged="OpentkWindow_OnSizeChanged"
+                          helpers:SizeObserver.Observe="True"
+                          helpers:SizeObserver.ObservedHeight="{Binding Scene.Height, Mode=OneWayToSource}"
+                          helpers:SizeObserver.ObservedWidth="{Binding Scene.Width, Mode=OneWayToSource}"/>-->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="82.5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+
+            <Grid HorizontalAlignment="Stretch" ColumnSpan="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Content="Start simulation" Name="StartSimulation" Click="StartSimulation_OnClick" IsEnabled="{Binding MillingSimulator1.SimulationStartButtonIsEnabled}"></Button>
+                <Button Grid.Column="2" Content="Stop simulation" Name="StopSimulation" Click="StopSimulation_OnClick_imulation_OnClick"></Button>
+                <Button Grid.Column="4" Content="Default view" Name="DefaultView" Click="DefaultView_OnClick"></Button>
+
+                <!--<Button Grid.Column="3"></Button>
+                    <Button Grid.Column="4"></Button>
+                    <Button Grid.Column="5"></Button>-->
+            </Grid>
+            <Grid Grid.Row="4" Grid.ColumnSpan="10">
+            <Grid.ColumnDefinitions >
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+
+            </Grid.ColumnDefinitions>
+            <Label Content="Start position" ></Label>
+                <RadioButton Grid.Column="1" Name ="StartCheckBox" IsChecked="{Binding RotationSimulator1.StartCordinateSystem}"></RadioButton>
+
+            <Label Grid.Column="3" Content="Finish position" ></Label>
+                <RadioButton Grid.Column="4" IsChecked="{Binding RotationSimulator1.FinishCordinateSystem}"></RadioButton>
+             
+            </Grid>
+
+            <Label  Grid.Row="5" Content="Euler fi0" Grid.ColumnSpan="2"  Background="DarkKhaki"></Label>
+            <TextBox Grid.Column="2" Grid.Row="5" Text="{Binding RotationSimulator1.TempCursor.EulerFi}"></TextBox>
+
+            <Label Grid.Row="6" Content="Euler teta0" Grid.ColumnSpan="2"  Background="DarkKhaki"></Label>
+            <TextBox Grid.Column="2" Grid.Row="6" Text="{Binding RotationSimulator1.TempCursor.EulerTeta}"></TextBox>
+
+            <Label Grid.Row="7" Content="Euler psi0" Grid.ColumnSpan="2"  Background="DarkKhaki"></Label>
+            <TextBox Grid.Column="2" Grid.Row="7" Text="{Binding RotationSimulator1.TempCursor.EulerPsi}"></TextBox>
+
+            <Label Content="Quaternion0 X"  Grid.Row="8" Grid.ColumnSpan="2"  ></Label>
+            <TextBox Grid.Column="2" Grid.Row="8" Text="{Binding RotationSimulator1.TempCursor.QuaternionX}"></TextBox>
+
+            <Label Grid.Row="9" Content="Quaternion0 Y" Grid.ColumnSpan="2" ></Label>
+            <TextBox Grid.Column="2" Grid.Row="9" Text="{Binding RotationSimulator1.TempCursor.QuaternionY}"></TextBox>
+
+            <Label Grid.Row="10" Content="Quaternion0 Z" Grid.ColumnSpan="2" ></Label>
+            <TextBox Grid.Column="2" Grid.Row="10" Text="{Binding RotationSimulator1.TempCursor.QuaternionZ}"></TextBox>
+
+            <Label Grid.Row="11" Content="Quaternion0 W" Grid.ColumnSpan="2" ></Label>
+            <TextBox Grid.Column="2" Grid.Row="11" Text="{Binding RotationSimulator1.TempCursor.QuaternionW}"></TextBox>
+
+            <Label Grid.Row="12" Content="Origin X" Grid.ColumnSpan="2" ></Label>
+            <TextBox Grid.Column="2" Grid.Row="12" Text="{Binding RotationSimulator1.TempCursor.X}"></TextBox>
+
+            <Label Grid.Row="13" Content="Origin Y" Grid.ColumnSpan="2" ></Label>
+            <TextBox Grid.Column="2" Grid.Row="13" Text="{Binding RotationSimulator1.TempCursor.Y}"></TextBox>
+
+            <Label Grid.Row="14" Content="Origin Z" Grid.ColumnSpan="2" ></Label>
+            <TextBox Grid.Column="2" Grid.Row="14" Text="{Binding RotationSimulator1.TempCursor.Z}"></TextBox>
+
+            <Label Grid.Row="15" Content="Animation time" Grid.ColumnSpan="2" ></Label>
+            <TextBox Grid.Column="2" Grid.Row="15" Text="{Binding RotationSimulator1.SimulationTime}"></TextBox>
+
+            <Label Grid.Row="16" Content="The number of frames " Grid.ColumnSpan="2" ></Label>
+            <TextBox Grid.Column="2" Grid.Row="16" Text="{Binding RotationSimulator1.FramesNumber}"></TextBox>
+
+            <Label Grid.Row="16" Content="The number of frames " Grid.ColumnSpan="2" ></Label>
+            <CheckBox Grid.Row="17" Grid.Column="2"></CheckBox>
+
+
+
+        </Grid>
+        <WindowsFormsHost Grid.Column="0"  Grid.Row="0" Name="OpentkWindow" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsEnabled="False" Initialized="OpentkWindow_OnInitialized" >
+        </WindowsFormsHost>
+
+    </Grid>
+</Window>
