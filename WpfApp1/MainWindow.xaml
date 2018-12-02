@@ -41,6 +41,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
 
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -59,35 +60,36 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+
+
 
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0" Content="Start simulation" Name="StartSimulation" Click="StartSimulation_OnClick" IsEnabled="{Binding MillingSimulator1.SimulationStartButtonIsEnabled}"></Button>
+                <Button Grid.Column="1" Content="Pause simulation" Name="PauseSimulation" Click="StopSimulation_OnClick_imulation_OnClick"></Button>
                 <Button Grid.Column="2" Content="Stop simulation" Name="StopSimulation" Click="StopSimulation_OnClick_imulation_OnClick"></Button>
-                <Button Grid.Column="4" Content="Default view" Name="DefaultView" Click="DefaultView_OnClick"></Button>
+                <Button Grid.Column="3" Content="Default view" Name="DefaultView" Click="DefaultView_OnClick"></Button>
 
                 <!--<Button Grid.Column="3"></Button>
                     <Button Grid.Column="4"></Button>
                     <Button Grid.Column="5"></Button>-->
             </Grid>
             <Grid Grid.Row="4" Grid.ColumnSpan="10">
-            <Grid.ColumnDefinitions >
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <Grid.ColumnDefinitions >
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
 
-            </Grid.ColumnDefinitions>
-            <Label Content="Start position" ></Label>
+                </Grid.ColumnDefinitions>
+                <Label Content="Start position" ></Label>
                 <RadioButton Grid.Column="1" Name ="StartCheckBox" IsChecked="{Binding RotationSimulator1.StartCordinateSystem}"></RadioButton>
 
-            <Label Grid.Column="3" Content="Finish position" ></Label>
+                <Label Grid.Column="3" Content="Finish position" ></Label>
                 <RadioButton Grid.Column="4" IsChecked="{Binding RotationSimulator1.FinishCordinateSystem}"></RadioButton>
-             
+
             </Grid>
 
             <Label  Grid.Row="5" Content="Euler fi0" Grid.ColumnSpan="2"  Background="DarkKhaki"></Label>
@@ -126,14 +128,18 @@
             <Label Grid.Row="16" Content="The number of frames " Grid.ColumnSpan="2" ></Label>
             <TextBox Grid.Column="2" Grid.Row="16" Text="{Binding RotationSimulator1.FramesNumber}"></TextBox>
 
-            <Label Grid.Row="17" Content="The number of frames " Grid.ColumnSpan="2" ></Label>
-            <CheckBox Grid.Row="17" Grid.Column="2"></CheckBox>
+            <Label Grid.Row="17" Content="Show all frames " Grid.ColumnSpan="2" ></Label>
+            <CheckBox Grid.Row="17" Grid.Column="2" IsChecked="{Binding RotationSimulator1.ShowAllFrames}"></CheckBox>
+            <Label Grid.Row="18" Content="LERP -> SLERP " Grid.ColumnSpan="2" ></Label>
+            <CheckBox Grid.Row="18" Grid.Column="2" IsChecked="{Binding RotationSimulator1.SLERP}"></CheckBox>
 
 
 
         </Grid>
-        <WindowsFormsHost Grid.Column="0"  Grid.Row="0" Name="OpentkWindow" Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsEnabled="False" Initialized="OpentkWindow_OnInitialized" >
-        </WindowsFormsHost>
+        <WindowsFormsHost Grid.Column="0"  Grid.Row="0" Name="OpentkWindow"  Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsEnabled="False" Initialized="OpentkWindow_OnInitialized" />
+
+
+
 
     </Grid>
 </Window>

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace ModelowanieGeometryczne.ViewModel
+namespace WpfApp1
 {
     public class ViewModelBase: INotifyPropertyChanged
     {

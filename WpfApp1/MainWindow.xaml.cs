@@ -4,7 +4,6 @@ using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Input;
 using System.Windows.Threading;
-using ModelowanieGeometryczne.ViewModel;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
@@ -27,18 +26,28 @@ namespace WpfApp1
             timer.Tick += TimerOnTick;
             timer.Start();
             MainViewModel1.RotationSimulator1.OnLoad();
-            var Width = 1500;
-            var Height = 900;
+            var Width = glControl.Width;
+            var Height = glControl.Height;
             
 
             GL.Viewport(0, 0, Width, Height);
 
             GL.MatrixMode(MatrixMode.Projection);
+           // var p = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)Width / (float)Height, 1.0f, 64.0f);
             var p = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)Width / (float)Height, 1.0f, 64.0f);
+           // var p = Matrix4.CreateOrthographic(Width/40.0f, Height/40.0f, -100.0f, 664.0f);
             GL.LoadMatrix(ref p);
 
             GL.MatrixMode(MatrixMode.Modelview);
-            var mv = Matrix4.LookAt(Vector3.UnitZ, Vector3.Zero, Vector3.UnitY);
+            
+            //var mv = Matrix4.LookAt(Vector3.UnitZ, Vector3.Zero, Vector3.UnitY);
+            //GL.LoadMatrix(ref mv);            
+
+            var CameraPosition=new Vector3(0,1,0);
+            var TargetPosition=new Vector3(0,0,0);
+            var UpVectorInWorldSpace=new Vector3(0,1,0);
+
+            var mv = Matrix4.LookAt(CameraPosition, TargetPosition, UpVectorInWorldSpace);
             GL.LoadMatrix(ref mv);
 
 
@@ -71,6 +80,8 @@ namespace WpfApp1
 
            
             MainViewModel1.RotationSimulator1.RefreshScene += Scene_RefreshScene;
+            MainViewModel1.RotationSimulator1.Cursor0.RefreshScene += Scene_RefreshScene;
+            MainViewModel1.RotationSimulator1.Cursor1.RefreshScene += Scene_RefreshScene;
         }
 
         #endregion
@@ -93,6 +104,7 @@ namespace WpfApp1
         private int frames;
 
         private GLControl glControl;
+        private GLControl glControl1;
 
         private DateTime lastMeasureTime;
 
@@ -123,10 +135,23 @@ namespace WpfApp1
 
 
             //  GL.Viewport(0, 0, Width, Height);
+
+            var CameraPosition = new Vector3(20, 00, 20);
+            var TargetPosition = new Vector3(0, 0, 0);
+            var UpVectorInWorldSpace = new Vector3(0, 1, 0);
+            var mv = Matrix4.LookAt(CameraPosition, TargetPosition, UpVectorInWorldSpace);
+
+
+
             MainViewModel1.RotationSimulator1.OnUpdateFrame();
-            MainViewModel1.RotationSimulator1.OnRenderFrame(_alphaX, _alphaY, _alphaZ);
+            MainViewModel1.RotationSimulator1.OnRenderFrame(_alphaX, _alphaY, _alphaZ, mv);
+
+
+
+
 
             glControl.SwapBuffers();
+            //glControl1.SwapBuffers();
 
             frames++;
         }
@@ -139,13 +164,15 @@ namespace WpfApp1
                 frames = 0;
                 lastMeasureTime = DateTime.Now;
             }
-
+            //Refresh();
             // glControl.Invalidate();
+           
         }
 
         void Scene_RefreshScene(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            glControl.Invalidate();
+            Refresh();
+            //glControl.Invalidate();
         }
 
         private void _glControl_MouseWheel(object sender, MouseEventArgs e)
@@ -228,6 +255,19 @@ namespace WpfApp1
             glControl.MouseWheel += GlControl_MouseWheel;
             (sender as WindowsFormsHost).Child = glControl;
         }
+
+        //private void OpentkWindow_OnInitialized1(object sender, EventArgs e)
+        //{
+        //    glControl1 = new GLControl();
+        //    //glControl.MakeCurrent();
+        //    glControl1.TopLevel = false;
+        //    //glControl1.Paint += GlControlOnPaint;
+        //    // glControl.MouseWheel += _glControl_MouseWheel;
+        //    glControl1.MouseDown += _glControl_MouseDown;
+        //    glControl1.MouseMove += _glControl_MouseMove;
+        //    glControl1.MouseWheel += GlControl_MouseWheel;
+        //    (sender as WindowsFormsHost).Child = glControl1;
+        //}
         void GlControl_MouseWheel(object sender, MouseEventArgs e)
         {
             return;

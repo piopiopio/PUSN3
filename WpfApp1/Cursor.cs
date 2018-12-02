@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using ModelowanieGeometryczne.ViewModel;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -10,11 +9,12 @@ namespace WpfApp1
     {
 
 
-        public Vector3d Origin = new Vector3d(0, 0, 0);
-        Vector3d OriginOffset;
-        private Vector3d[] Axis = new Vector3d[3] {new Vector3d(1, 0, 0), new Vector3d(0, 1, 0), new Vector3d(0, 0, 1)};
+        public Vector3d Origin;
+        Vector3d OriginOffset=new Vector3d(300,0,0);
+        private Vector3d[] Axis = new Vector3d[3] {new Vector3d(axisLength, 0, 0), new Vector3d(0, axisLength, 0), new Vector3d(0, 0, axisLength) };
 
-        private int axisLength = 100;
+        
+        public const int axisLength = 100;
         private Vector3d[] AxisColors = new Vector3d[3] {Vector3d.UnitX, Vector3d.UnitY, Vector3d.UnitZ};
         //Euler ZYX
         public Vector3d EulerAngles = new Vector3d();
@@ -26,6 +26,7 @@ namespace WpfApp1
             {
                 Origin.X = value;
                 OnPropertyChanged(nameof(X));
+                Refresh();
             }
         }
 
@@ -36,6 +37,7 @@ namespace WpfApp1
             {
                 Origin.Y = value;
                 OnPropertyChanged(nameof(Y));
+                Refresh();
             }
         }
 
@@ -46,6 +48,7 @@ namespace WpfApp1
             {
                 Origin.Z = value;
                 OnPropertyChanged(nameof(Z));
+                Refresh();
             }
         }
 
@@ -57,7 +60,7 @@ namespace WpfApp1
             {
                 EulerAngles.X = (Math.PI / 180) * value;
                 OnPropertyChanged(nameof(EulerFi));
-                _quaternion = ConvertEulerToQuaternion(EulerAngles);
+               // _quaternion = ConvertEulerToQuaternion(EulerAngles);
                 RefreshQuaternion();
             }
         }
@@ -69,7 +72,7 @@ namespace WpfApp1
             {
                 EulerAngles.Y = (Math.PI / 180) * value;
                 OnPropertyChanged(nameof(EulerTeta));
-                _quaternion = ConvertEulerToQuaternion(EulerAngles);
+               // _quaternion = ConvertEulerToQuaternion(EulerAngles);
                 RefreshQuaternion();
             }
         }
@@ -82,12 +85,12 @@ namespace WpfApp1
             {
                 EulerAngles.Z = (Math.PI / 180) * value;
                 OnPropertyChanged(nameof(EulerPsi));
-                _quaternion = ConvertEulerToQuaternion(EulerAngles);
+                //_quaternion = ConvertEulerToQuaternion(EulerAngles);
                 RefreshQuaternion();
             }
         }
 
-        private Vector4d _quaternion = new Vector4d();
+        public Vector4d _quaternion = new Vector4d();
 
         public double QuaternionX
         {
@@ -142,31 +145,80 @@ namespace WpfApp1
             OnPropertyChanged(nameof(EulerFi));
             OnPropertyChanged(nameof(EulerTeta));
             OnPropertyChanged(nameof(EulerPsi));
+            Refresh();
         }
 
     public void RefreshQuaternion()
         {
+            _quaternion = ConvertEulerToQuaternion(EulerAngles);
             OnPropertyChanged(nameof(QuaternionX));
             OnPropertyChanged(nameof(QuaternionY));
             OnPropertyChanged(nameof(QuaternionZ));
             OnPropertyChanged(nameof(QuaternionW));
-        }
-        public Cursor(Vector3d originOffset=new Vector3d())
-        {
-            OriginOffset = originOffset;
+            Refresh();
         }
 
-
-        public void Draw()
+        
+        public Cursor(Vector3d origin = new Vector3d() )
         {
-            GL.LineWidth(10);
+            Origin = origin;
+            RefreshQuaternion();
+        }
+
+        private Vector4d ConjugatedQuaternion(Vector4d q1)
+        {
+            return new Vector4d(-q1.X, -q1.Y, -q1.Z, q1.W);
+        }
+        private Vector4d HamiltonProduct(Vector4d q1, Vector4d q2)
+        {
+            double w = q1.W * q2.W - q1.X * q2.X - q1.Y * q2.Y - q1.Z * q2.Z;
+            double x = q1.W * q2.X + q1.X * q2.W + q1.Y * q2.Z - q1.Z * q2.Y;
+            double y = q1.W * q2.Y - q1.X * q2.Z + q1.Y * q2.W + q1.Z * q2.X;
+            double z = q1.W * q2.Z + q1.X * q2.Y - q1.Y * q2.X + q1.Z * q2.W;
+            Vector4d temp = new Vector4d(x, y, z, w);
+           // temp = temp.Normalized();
+            return temp;
+        }
+
+        private Vector4d AxisVectorToQuaternion(Vector3d v)
+        {
+            return new Vector4d(v.X, v.Y,v.Z,0);
+        }
+
+        private Vector3d QuaternionToAxisVector(Vector4d q)
+        {
+            return new Vector3d(q.X, q.Y,q.Z);
+        }
+
+        public void Draw(bool quaternionSideOfScreen)
+        {
+            GL.LineWidth(3);
             GL.Begin(BeginMode.Lines);
 
             for (int i = 0; i < Axis.Count(); i++)
             {
                 GL.Color3(AxisColors[i].X, AxisColors[i].Y, AxisColors[i].Z);
-                GL.Vertex3(Origin + OriginOffset);
-                GL.Vertex3(Origin + OriginOffset + RotateXMatrix(EulerAngles.X).Multiply(Axis[i])* axisLength);
+                if (quaternionSideOfScreen)
+                {
+                    GL.Vertex3(Origin + OriginOffset);
+                    //GL.Vertex3(Origin + OriginOffset + RotateXMatrix(EulerAngles.X).Multiply(Axis[i]));
+                    var a = HamiltonProduct(_quaternion, AxisVectorToQuaternion(Axis[i]));
+                    a = HamiltonProduct(a, ConjugatedQuaternion(_quaternion));
+                    var b = QuaternionToAxisVector(a) + Origin + OriginOffset;
+                    GL.Vertex3(b);
+
+                    //var P = new Vector4d(1, 0, 0, 0);
+                    //var R = new Vector4d(0, 0, 0.707, 0.707);
+                    //var Rprim = ConjugatedQuaternion(R);
+                    //var HRP = HamiltonProduct(R, P);
+                    //var pprim = HamiltonProduct(HRP, Rprim);
+                }
+
+                else
+                {
+                    GL.Vertex3(Origin - OriginOffset);
+                    GL.Vertex3(Origin - OriginOffset + ( RotateZMatrix(EulerAngles.X) * RotateYMatrix(EulerAngles.Y) * RotateXMatrix(EulerAngles.Z)).Multiply(Axis[i]) );
+                }
             }
             GL.End();
             GL.Flush();

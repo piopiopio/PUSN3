@@ -7,7 +7,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Threading;
-using ModelowanieGeometryczne.ViewModel;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using WpfApp1;
@@ -16,9 +15,40 @@ using Cursor = WpfApp1.Cursor;
 
 public class RotationSimulator : ViewModelBase
 {
-    //  private Stopwatch stopWatch;
+
+    public RotationSimulator(GLControl _glControl, GLControl _glControl1)
+    {
+
+    }
+
+    private bool _slerp = false;
+
+    public bool SLERP
+    {
+        get { return _slerp; }
+        set
+        {
+            _slerp = value;
+            OnPropertyChanged(nameof(SLERP));
+        }
+    }
+    private Vector3d Offset=new Vector3d();
+
+    private bool _showAllFrames = true;
+
+    public bool ShowAllFrames
+    {
+        get { return _showAllFrames; }
+        set
+        {
+            _showAllFrames = value;
+            OnPropertyChanged(nameof(ShowAllFrames));
+        }
+    }
+
     public RotationSimulator()
     {
+
 
     }
 
@@ -75,7 +105,7 @@ public class RotationSimulator : ViewModelBase
             OnPropertyChanged(nameof(TempCursor));
         }
     }
-  
+
     public Cursor TempCursor
     {
         get
@@ -98,14 +128,14 @@ public class RotationSimulator : ViewModelBase
             }
             else
             {
-                Cursor1=value;
+                Cursor1 = value;
             }
-            
+
         }
     }
 
-    public Cursor Cursor0{get; set;}=new Cursor();
-    public Cursor Cursor1{ get; set; } = new Cursor();
+    public Cursor Cursor0 { get; set; } = new Cursor(new Vector3d(0,200,0));
+    public Cursor Cursor1 { get; set; } = new Cursor(new Vector3d(0, -200, 0));
 
 
 
@@ -117,7 +147,7 @@ public class RotationSimulator : ViewModelBase
         set { _animationSpeed = value; }
     }
 
-   
+
     public void OnLoad()
     {
 
@@ -131,7 +161,7 @@ public class RotationSimulator : ViewModelBase
     }
 
     private double counter = 0;
-    private double scale = 0.01;
+    private double scale = 0.005;
 
     public double Scale
     {
@@ -141,8 +171,9 @@ public class RotationSimulator : ViewModelBase
 
     private Vector3? frozenCutterCeneterPointPosition;
 
-    public void OnRenderFrame(double alphaX, double alphaY, double alphaZ)
+    public void OnRenderFrame(double alphaX, double alphaY, double alphaZ, Matrix4 LookAtMatrix)
     {
+
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         GL.PushAttrib(AttribMask.LightingBit);
         GL.PushAttrib(AttribMask.LightingBit);
@@ -151,8 +182,8 @@ public class RotationSimulator : ViewModelBase
         GL.PopAttrib();
         GL.MatrixMode(MatrixMode.Modelview);
         GL.LoadIdentity();
-        var modelview = Matrix4.LookAt(0.0f, 3.5f, 3.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
-        GL.LoadMatrix(ref modelview);
+     //   var modelview = Matrix4.LookAt(0.0f, 3.5f, 3.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+        GL.LoadMatrix(ref LookAtMatrix);
 
         //counter += e.Time;
         // counter += 0.1;
@@ -163,20 +194,32 @@ public class RotationSimulator : ViewModelBase
         GL.Scale(Scale, Scale, Scale);
         GL.Rotate(50, 0, 1, 0);
 
-        Cursor0.Draw();
-        Cursor1.Draw();
-        CurrentCursor.Draw();
+        Cursor0.Draw(true);
+        Cursor1.Draw(true);
 
-        foreach (var item in AnimationFramesList)
+        Cursor0.Draw(false);
+        Cursor1.Draw(false);
+        if (CurrentCursors.Item1 != null)
         {
-            item.Draw();
+            CurrentCursors.Item1.Draw(false);
+        }
+        if (CurrentCursors.Item2 != null)
+        {
+            CurrentCursors.Item2.Draw(true);
+        }
+        if (_showAllFrames)
+        {
+            foreach (var item in AnimationFramesList)
+            {
+                item.Item1.Draw(false);
+            }
         }
 
     }
 
-   
-    
-    
+
+
+
 
     private DispatcherTimer timer;
     int _stepNumber = 0;
@@ -194,7 +237,7 @@ public class RotationSimulator : ViewModelBase
         }
     }
 
-    private bool _simulationResultButtonIsEnabled=true;
+    private bool _simulationResultButtonIsEnabled = true;
 
     public bool SimulationResultButtonIsEnabled
     {
@@ -239,47 +282,89 @@ public class RotationSimulator : ViewModelBase
         GenerateAnimationFrames(_simulationTime, _framesNumber);
         timer = new DispatcherTimer();
         //timer.Interval = TimeSpan.FromMilliseconds(30);
-        timer.Interval = TimeSpan.FromSeconds(_simulationTime/(_framesNumber-1));
+        timer.Interval = TimeSpan.FromSeconds(_simulationTime / (_framesNumber - 1));
         timer.Tick += TimerOnTick;
+        lastMeasureTime=DateTime.Now;
         timer.Start();
 
     }
 
-    private Cursor CurrentCursor =new Cursor();
-    private List<Cursor> AnimationFramesList=new List<Cursor>();
+    private Tuple<Cursor,Cursor> CurrentCursors = new Tuple<Cursor, Cursor>(null,null);
+    private List<Tuple<Cursor, Cursor>> AnimationFramesList = new List<Tuple<Cursor, Cursor>>();
+    private DateTime lastMeasureTime = new DateTime();
     public void GenerateAnimationFrames(double simulationTime, int framesNumber)
     {
         AnimationFramesList.Clear();
         for (int i = 0; i <= framesNumber; i++)
         {
-            var temp =new Cursor();
-            double a = ((double) (framesNumber - i) / framesNumber);
-            double b = ((double) i / framesNumber);
-            temp.EulerAngles = a* Cursor0.EulerAngles +  b* Cursor1.EulerAngles;
-            temp.Origin = a* Cursor0.Origin +  b* Cursor1.Origin;
-            
-            AnimationFramesList.Add(temp);
+            var temp = new Cursor();
+            double a = ((double)(framesNumber - i) / framesNumber);
+            //double b = ((double)i / framesNumber);
+            //temp.EulerAngles = a * Cursor0.EulerAngles + b * Cursor1.EulerAngles;
+            //temp.Origin = a * Cursor0.Origin + b * Cursor1.Origin;
+
+            //AnimationFramesList.Add(temp);
+            AnimationFramesList.Add(new Tuple<Cursor, Cursor>(CursorAngleByEuler(Cursor0, Cursor1,a),null));
         }
     }
 
 
     private void TimerOnTick(object sender, EventArgs e)
     {
-        if(StepNumber>(AnimationFramesList.Count-1))
-        {
-            timer.Stop();
-        }
-        else
-        {
-            CurrentCursor = AnimationFramesList[StepNumber];
-            Refresh();
-        }
+        //if (StepNumber > (AnimationFramesList.Count - 1))
+        //{
+        //    timer.Stop();
+        //}
+        //else
+        //{
+            var a=DateTime.Now.Subtract(lastMeasureTime).TotalMilliseconds/(_simulationTime*1000);
+            if (a > 1)
+            {
+                a = 1;
+                timer.Stop();
+            }
+            
 
-        StepNumber++;
+            CurrentCursors = new Tuple<Cursor, Cursor>(CursorAngleByEuler(Cursor0, Cursor1,a), CursorAngleByQuaternion(Cursor0, Cursor1, a, false));
+           // CurrentCursor = AnimationFramesList[StepNumber];
+            Refresh();
+       // }
+
+       // StepNumber++;
 
     }
 
-    private bool _showPath=false;
+
+    private Cursor CursorAngleByEuler(Cursor StartCursor, Cursor EndCursor, double AnimationProgress)
+    {
+        //Animation progress range 0 do 1
+        var temp = new Cursor();
+        var b = 1 - AnimationProgress;
+        temp.EulerAngles = AnimationProgress * Cursor0.EulerAngles + b * Cursor1.EulerAngles;
+        temp.Origin = AnimationProgress * Cursor0.Origin + b * Cursor1.Origin;
+        return temp;
+    }
+
+    private Cursor CursorAngleByQuaternion(Cursor StartCursor, Cursor EndCursor, double AnimationProgress, bool slerp)
+    {
+        //Animation progress range 0 do 1
+        var temp = new Cursor();
+        if (slerp)
+        {
+
+        }
+        else
+        {
+            var b = 1 - AnimationProgress;
+            temp._quaternion = AnimationProgress * Cursor0._quaternion + b * Cursor1._quaternion;
+            temp.Origin = AnimationProgress * Cursor0.Origin + b * Cursor1.Origin;
+        }
+
+
+        return temp;
+    }
+
+    private bool _showPath = false;
     public bool ShowPath
     {
         get { return _showPath; }

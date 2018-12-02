@@ -1,6 +1,6 @@
 ﻿using OpenTK.Graphics.OpenGL;
 
-namespace ModelowanieGeometryczne.ViewModel
+namespace WpfApp1
 {
     public class MainViewModel : ViewModelBase
     {
