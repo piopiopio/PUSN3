@@ -10,11 +10,11 @@ namespace WpfApp1
 
 
         public Vector3d Origin;
-        Vector3d OriginOffset=new Vector3d(300,0,0);
+        Vector3d OriginOffset=new Vector3d(1.5,0,0);
         private Vector3d[] Axis = new Vector3d[3] {new Vector3d(axisLength, 0, 0), new Vector3d(0, axisLength, 0), new Vector3d(0, 0, axisLength) };
 
         
-        public const int axisLength = 100;
+        public const double axisLength = 0.5;
         private Vector3d[] AxisColors = new Vector3d[3] {Vector3d.UnitX, Vector3d.UnitY, Vector3d.UnitZ};
         //Euler ZYX
         public Vector3d EulerAngles = new Vector3d();

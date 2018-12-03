@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         
-        Title="MainWindow" WindowState="Maximized" MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseWheel="Window_MouseWheel">
+        Title="MainWindow" WindowState="Maximized" MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseWheel="Window_MouseWheel" KeyDown="MainWindow_OnKeyDown">
 
     <Grid>
         <Grid.ColumnDefinitions>

@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MouseEventArgs = System.Windows.Forms.MouseEventArgs;
 
 namespace WpfApp1
@@ -136,7 +137,7 @@ namespace WpfApp1
 
             //  GL.Viewport(0, 0, Width, Height);
 
-            var CameraPosition = new Vector3(5, 0, 5);
+            var CameraPosition = new Vector3(0, 0, 8);
             var TargetPosition = new Vector3(0, 0, 0);
             var UpVectorInWorldSpace = new Vector3(0, 1, 0);
             var mv = Matrix4.LookAt(CameraPosition, TargetPosition, UpVectorInWorldSpace);
@@ -232,6 +233,21 @@ namespace WpfApp1
             }
         }
 
+        private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.OemMinus:
+                    MainViewModel1.RotationSimulator1.Scale -= 100 / 1000.0;
+                    Refresh();
+                    break;
+                case Key.OemPlus:
+                    MainViewModel1.RotationSimulator1.Scale += 100 / 1000.0;
+                    Refresh();
+                    break;
+            }
+        }
+
         private void MouseMoveRotate(int fi, int teta)
         {
             _fi = fi - eX;
@@ -239,7 +255,12 @@ namespace WpfApp1
             eX = fi;
             eY = teta;
 
-            _alphaX += 16 * 4 * _teta / 750;
+            //_alphaX += 16 * 4 * _teta / 750;
+            //_alphaY += 16 * 4 * _fi / 1440;
+            //_alphaZ += 0;
+
+
+            _alphaX += 16 * 4 * _teta / 1440;
             _alphaY += 16 * 4 * _fi / 1440;
             _alphaZ += 0;
         }
@@ -247,7 +268,7 @@ namespace WpfApp1
 
         private void Window_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            MainViewModel1.RotationSimulator1.Scale += e.Delta / 100000.0;
+            MainViewModel1.RotationSimulator1.Scale += e.Delta / 1000.0;
             Refresh();
         }
 
@@ -293,7 +314,7 @@ namespace WpfApp1
             _alphaX = 0;
             _alphaY = 0;
             _alphaZ = 0;
-            MainViewModel1.RotationSimulator1.Scale = 0.005;
+            MainViewModel1.RotationSimulator1.Scale = 1;
             glControl.Invalidate();
         }
 
@@ -310,6 +331,8 @@ namespace WpfApp1
         {
             MainViewModel1.RotationSimulator1.PauseSimulation();
         }
+
+
     }
 
     #endregion

@@ -140,8 +140,8 @@ public class RotationSimulator : ViewModelBase
         }
     }
 
-    public Cursor Cursor0 { get; set; } = new Cursor(new Vector3d(0, -400, 0));
-    public Cursor Cursor1 { get; set; } = new Cursor(new Vector3d(0, 400, 0));
+    public Cursor Cursor0 { get; set; } = new Cursor(new Vector3d(0, -2, 0));
+    public Cursor Cursor1 { get; set; } = new Cursor(new Vector3d(0, 2, 0));
 
 
 
@@ -167,7 +167,8 @@ public class RotationSimulator : ViewModelBase
     }
 
     private double counter = 0;
-    private double scale = 0.005;
+    //private double scale = 0.005;
+    private double scale = 1;
 
     public double Scale
     {
@@ -196,9 +197,9 @@ public class RotationSimulator : ViewModelBase
         //  GL.Rotate(counter * 10, 0, 1, 0);
         GL.Rotate(alphaX, 1, 0, 0);
         GL.Rotate(alphaY, 0, 1, 0);
-        GL.Rotate(alphaX, 0, 0, 1);
+        GL.Rotate(alphaZ, 0, 0, 1);
         GL.Scale(Scale, Scale, Scale);
-        GL.Rotate(50, 0, 1, 0);
+        //GL.Rotate(0, 0, 1, 0);
 
         Cursor0.Draw(true);
         Cursor1.Draw(true);
