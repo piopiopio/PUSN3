@@ -27,16 +27,16 @@ namespace WpfApp1
             timer.Tick += TimerOnTick;
             timer.Start();
             MainViewModel1.RotationSimulator1.OnLoad();
-            var Width = glControl.Width;
-            var Height = glControl.Height;
+            //var Width = glControl.Width;
+            //var Height = glControl.Height;
             
 
-            GL.Viewport(0, 0, Width, Height);
+            //GL.Viewport(0, 0, Width, Height);
 
             GL.MatrixMode(MatrixMode.Projection);
            // var p = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)Width / (float)Height, 1.0f, 64.0f);
-            var p = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)Width / (float)Height, 1.0f, 64.0f);
-           // var p = Matrix4.CreateOrthographic(Width/40.0f, Height/40.0f, -100.0f, 664.0f);
+           // var p = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)Width / (float)Height, 1.0f, 64.0f);
+            var p = Matrix4.CreateOrthographic(7,7, -100.0f, 664.0f);
             GL.LoadMatrix(ref p);
 
             GL.MatrixMode(MatrixMode.Modelview);

@@ -424,6 +424,7 @@ public class RotationSimulator : ViewModelBase
     {
 
         timer.Stop();
+        pauseSimulationFlag = false;
         CurrentCursors = new Tuple<Cursor, Cursor>(null, null);
         Refresh();
         SimulationStartButtonIsEnabled = true;
