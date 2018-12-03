@@ -33,7 +33,7 @@ public class RotationSimulator : ViewModelBase
             Refresh();
         }
     }
-    private Vector3d Offset=new Vector3d();
+    private Vector3d Offset = new Vector3d();
 
     private bool _showAllFrames = false;
 
@@ -140,7 +140,7 @@ public class RotationSimulator : ViewModelBase
         }
     }
 
-    public Cursor Cursor0 { get; set; } = new Cursor(new Vector3d(0,-400,0));
+    public Cursor Cursor0 { get; set; } = new Cursor(new Vector3d(0, -400, 0));
     public Cursor Cursor1 { get; set; } = new Cursor(new Vector3d(0, 400, 0));
 
 
@@ -188,7 +188,7 @@ public class RotationSimulator : ViewModelBase
         GL.PopAttrib();
         GL.MatrixMode(MatrixMode.Modelview);
         GL.LoadIdentity();
-     //   var modelview = Matrix4.LookAt(0.0f, 3.5f, 3.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+        //   var modelview = Matrix4.LookAt(0.0f, 3.5f, 3.5f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
         GL.LoadMatrix(ref LookAtMatrix);
 
         //counter += e.Time;
@@ -281,15 +281,18 @@ public class RotationSimulator : ViewModelBase
     }
     public void StartSimulation()
     {
-        if (stopSimulationFlag)
+        SimulationStartButtonIsEnabled = false;
+
+        if (pauseSimulationFlag)
         {
-            stopSimulationFlag = false;
-            lastMeasureTime=DateTime.Now- BackupTime;
+            pauseSimulationFlag = false;
+            lastMeasureTime = DateTime.Now - BackupTime;
         }
         else
         {
             Cursor1.ConditionEndQuaternionToNearer(Cursor0);
-
+           //var debug= Vector4d.Dot(Cursor0._quaternion, Cursor1._quaternion);
+           
             SimulationResultButtonIsEnabled = false;
             SimulationStartButtonIsEnabled = false;
             LoadPathButtonIsEnabled = false;
@@ -306,8 +309,8 @@ public class RotationSimulator : ViewModelBase
 
     }
 
- 
-    private Tuple<Cursor,Cursor> CurrentCursors = new Tuple<Cursor, Cursor>(null,null);
+
+    private Tuple<Cursor, Cursor> CurrentCursors = new Tuple<Cursor, Cursor>(null, null);
     private List<Tuple<Cursor, Cursor>> AnimationFramesList = new List<Tuple<Cursor, Cursor>>();
     private DateTime lastMeasureTime = new DateTime();
 
@@ -324,7 +327,7 @@ public class RotationSimulator : ViewModelBase
             //temp.Origin = a * Cursor0.Origin + b * Cursor1.Origin;
 
             //AnimationFramesList.Add(temp);
-            AnimationFramesList.Add(new Tuple<Cursor, Cursor>(CursorAngleByEuler(Cursor0, Cursor1,a), CursorAngleByQuaternion(Cursor0, Cursor1, a, _slerp)));
+            AnimationFramesList.Add(new Tuple<Cursor, Cursor>(CursorAngleByEuler(Cursor0, Cursor1, a), CursorAngleByQuaternion(Cursor0, Cursor1, a, _slerp)));
         }
     }
 
@@ -339,22 +342,26 @@ public class RotationSimulator : ViewModelBase
         //else
         //{
         BackupTime = DateTime.Now.Subtract(lastMeasureTime);
-        var a= BackupTime.TotalMilliseconds/(_simulationTime*1000);
-             
-            if (a > 1)
-            {
-                a = 1;
-                timer.Stop();
-                CurrentCursors = new Tuple<Cursor, Cursor>(null, null);
-            }
-            
+        var a = BackupTime.TotalMilliseconds / (_simulationTime * 1000);
 
-            CurrentCursors = new Tuple<Cursor, Cursor>(CursorAngleByEuler(Cursor0, Cursor1,a), CursorAngleByQuaternion(Cursor0, Cursor1, a, _slerp));
-           // CurrentCursor = AnimationFramesList[StepNumber];
-            Refresh();
-       // }
+        if (a > 1)
+        {
+            a = 1;
+            timer.Stop();
+            CurrentCursors = new Tuple<Cursor, Cursor>(null, null);
+            SimulationStartButtonIsEnabled = true;
+        }
+        else
+        {
 
-       // StepNumber++;
+            CurrentCursors = new Tuple<Cursor, Cursor>(CursorAngleByEuler(Cursor0, Cursor1, a), CursorAngleByQuaternion(Cursor0, Cursor1, a, _slerp));
+            // CurrentCursor = AnimationFramesList[StepNumber];
+           
+        }
+        Refresh();
+        // }
+
+        // StepNumber++;
 
     }
 
@@ -363,8 +370,8 @@ public class RotationSimulator : ViewModelBase
     {
         //Animation progress range 0 do 1
         var temp = new Cursor();
-   
-        temp.EulerAngles = (1-AnimationProgress) * Cursor0.EulerAngles + AnimationProgress * Cursor1.EulerAngles;
+
+        temp.EulerAngles = (1 - AnimationProgress) * Cursor0.EulerAngles + AnimationProgress * Cursor1.EulerAngles;
         temp.Origin = (1 - AnimationProgress) * Cursor0.Origin + AnimationProgress * Cursor1.Origin;
         return temp;
     }
@@ -382,12 +389,12 @@ public class RotationSimulator : ViewModelBase
         }
         else
         {
-           
+
             temp._quaternion = (AnimationProgress * EndCursor._quaternion + (1 - AnimationProgress) * StartCursor._quaternion).Normalized();
-           
+
         }
 
-        temp.Origin = (1 - AnimationProgress)* StartCursor.Origin + AnimationProgress * EndCursor.Origin;
+        temp.Origin = (1 - AnimationProgress) * StartCursor.Origin + AnimationProgress * EndCursor.Origin;
         return temp;
     }
 
@@ -403,19 +410,22 @@ public class RotationSimulator : ViewModelBase
         }
     }
 
-    private bool stopSimulationFlag = false;
+    private bool pauseSimulationFlag = false;
     public void PauseSimulation()
     {
-        stopSimulationFlag = true;
+        
+        pauseSimulationFlag = true;
         timer.Stop();
+        SimulationStartButtonIsEnabled = true;
     }
 
     public void StopSimulation()
     {
-     
+
         timer.Stop();
-        CurrentCursors=new Tuple<Cursor, Cursor>(null, null);
+        CurrentCursors = new Tuple<Cursor, Cursor>(null, null);
         Refresh();
+        SimulationStartButtonIsEnabled = true;
     }
 
 }
