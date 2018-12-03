@@ -24,6 +24,7 @@ namespace WpfApp1
             get => Origin.X;
             set
             {
+
                 Origin.X = value;
                 OnPropertyChanged(nameof(X));
                 Refresh();
@@ -58,9 +59,8 @@ namespace WpfApp1
             get => EulerAngles.X * 180 / Math.PI;
             set
             {
-                EulerAngles.X = (Math.PI / 180) * value;
+                EulerAngles.X = ConditionValue((Math.PI / 180) * value);
                 OnPropertyChanged(nameof(EulerFi));
-               // _quaternion = ConvertEulerToQuaternion(EulerAngles);
                 RefreshQuaternion();
             }
         }
@@ -70,9 +70,8 @@ namespace WpfApp1
             get => EulerAngles.Y * 180 / Math.PI;
             set
             {
-                EulerAngles.Y = (Math.PI / 180) * value;
+                EulerAngles.Y = ConditionValue((Math.PI / 180) * value);
                 OnPropertyChanged(nameof(EulerTeta));
-               // _quaternion = ConvertEulerToQuaternion(EulerAngles);
                 RefreshQuaternion();
             }
         }
@@ -83,13 +82,36 @@ namespace WpfApp1
             get => EulerAngles.Z * 180 / Math.PI;
             set
             {
-                EulerAngles.Z = (Math.PI / 180) * value;
+                EulerAngles.Z = ConditionValue((Math.PI / 180) * value);
                 OnPropertyChanged(nameof(EulerPsi));
-                //_quaternion = ConvertEulerToQuaternion(EulerAngles);
                 RefreshQuaternion();
             }
         }
 
+        public double ConditionValue(double a)
+        {
+            double b;
+            double n =(int) (a / (2*Math.PI));
+            b = a - n * (2 * Math.PI);
+            return b;
+        }
+
+        public void ConditionEndQuaternionToNearer(Cursor startQuaternion)
+        {
+            if((EulerAngles.X- startQuaternion.EulerAngles.X)>Math.PI)
+            {
+                EulerAngles.X = 2 * Math.PI - EulerAngles.X;
+            }
+            if ((EulerAngles.Y- startQuaternion.EulerAngles.Y)> Math.PI)
+            {
+                EulerAngles.Y = 2 * Math.PI - EulerAngles.Y;
+            }
+            if ((EulerAngles.Z- startQuaternion.EulerAngles.Z)> Math.PI)
+            { 
+                EulerAngles.Z = 2* Math.PI - EulerAngles.Z;
+            }
+            RefreshQuaternion();
+        }
         public Vector4d _quaternion = new Vector4d();
 
         public double QuaternionX

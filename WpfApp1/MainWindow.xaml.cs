@@ -136,7 +136,7 @@ namespace WpfApp1
 
             //  GL.Viewport(0, 0, Width, Height);
 
-            var CameraPosition = new Vector3(20, 00, 20);
+            var CameraPosition = new Vector3(5, 0, 5);
             var TargetPosition = new Vector3(0, 0, 0);
             var UpVectorInWorldSpace = new Vector3(0, 1, 0);
             var mv = Matrix4.LookAt(CameraPosition, TargetPosition, UpVectorInWorldSpace);
@@ -169,9 +169,18 @@ namespace WpfApp1
            
         }
 
+        //void Scene_RefreshScene(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    Refresh();
+
+        //    //glControl.Invalidate();
+        //}
         void Scene_RefreshScene(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
+            MainViewModel1.RotationSimulator1.GenerateAnimationFrames(MainViewModel1.RotationSimulator1.SimulationTime,
+                MainViewModel1.RotationSimulator1.FramesNumber);
             Refresh();
+
             //glControl.Invalidate();
         }
 
@@ -284,7 +293,7 @@ namespace WpfApp1
             _alphaX = 0;
             _alphaY = 0;
             _alphaZ = 0;
-            MainViewModel1.RotationSimulator1.Scale = 0.01;
+            MainViewModel1.RotationSimulator1.Scale = 0.005;
             glControl.Invalidate();
         }
 
@@ -295,6 +304,11 @@ namespace WpfApp1
         private void StopSimulation_OnClick_imulation_OnClick(object sender, RoutedEventArgs e)
         {
             MainViewModel1.RotationSimulator1.StopSimulation();
+        }
+
+        private void PauseSimulation_OnClickSimulation_OnClick_imulation_OnClick(object sender, RoutedEventArgs e)
+        {
+            MainViewModel1.RotationSimulator1.PauseSimulation();
         }
     }
 
