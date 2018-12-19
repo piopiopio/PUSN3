@@ -22,7 +22,7 @@ namespace WpfApp1
 
 
 
-            var timer = new DispatcherTimer();
+            var timer = new DispatcherTimer(DispatcherPriority.Render);
             timer.Interval = TimeSpan.FromMilliseconds(1);
             timer.Tick += TimerOnTick;
             timer.Start();
@@ -161,7 +161,7 @@ namespace WpfApp1
         {
             if (DateTime.Now.Subtract(lastMeasureTime) > TimeSpan.FromSeconds(1))
             {
-                Title = "PUSN: " + frames + "fps";
+                Title = "Rotation Comparator: " + frames + "fps";
                 frames = 0;
                 lastMeasureTime = DateTime.Now;
             }

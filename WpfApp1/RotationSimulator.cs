@@ -416,14 +416,20 @@ public class RotationSimulator : ViewModelBase
     {
         
         pauseSimulationFlag = true;
-        timer.Stop();
-        SimulationStartButtonIsEnabled = true;
+        if (timer != null)
+        {
+            timer.Stop();
+        }
+            SimulationStartButtonIsEnabled = true;
     }
 
     public void StopSimulation()
     {
 
-        timer.Stop();
+        if (timer != null)
+        {
+            timer.Stop();
+        }
         pauseSimulationFlag = false;
         CurrentCursors = new Tuple<Cursor, Cursor>(null, null);
         Refresh();

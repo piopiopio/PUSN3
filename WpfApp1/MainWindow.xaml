@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         
-        Title="MainWindow" WindowState="Maximized" MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseWheel="Window_MouseWheel" KeyDown="MainWindow_OnKeyDown">
+        Title="Rotations comparator" WindowState="Maximized" MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseWheel="Window_MouseWheel" KeyDown="MainWindow_OnKeyDown">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -123,25 +123,25 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Label  Grid.Row="0" Content="Euler fi0"  Background="DarkKhaki"></Label>
+                <Label  Grid.Row="0" Content="Euler fi"  Background="DarkKhaki"></Label>
                 <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding RotationSimulator1.Cursor0.EulerFi}"></TextBox>
 
-                <Label Grid.Row="1" Content="Euler teta0"  Background="DarkKhaki"></Label>
+                <Label Grid.Row="1" Content="Euler teta"  Background="DarkKhaki"></Label>
                 <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding RotationSimulator1.Cursor0.EulerTeta}"></TextBox>
 
-                <Label Grid.Row="2" Content="Euler psi0"  Background="DarkKhaki"></Label>
+                <Label Grid.Row="2" Content="Euler psi"  Background="DarkKhaki"></Label>
                 <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding RotationSimulator1.Cursor0.EulerPsi}"></TextBox>
 
-                <Label Grid.Row="3" Content="Quaternion0 X"  ></Label>
+                <Label Grid.Row="3" Content="Quaternion X"  ></Label>
                 <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding RotationSimulator1.Cursor0.QuaternionX}"></TextBox>
 
-                <Label Grid.Row="4" Content="Quaternion0 Y"  ></Label>
+                <Label Grid.Row="4" Content="Quaternion Y"  ></Label>
                 <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding RotationSimulator1.Cursor0.QuaternionY}"></TextBox>
 
-                <Label Grid.Row="5" Content="Quaternion0 Z" ></Label>
+                <Label Grid.Row="5" Content="Quaternion Z" ></Label>
                 <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding RotationSimulator1.Cursor0.QuaternionZ}"></TextBox>
 
-                <Label Grid.Row="6" Content="Quaternion0 W" ></Label>
+                <Label Grid.Row="6" Content="Quaternion W" ></Label>
                 <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding RotationSimulator1.Cursor0.QuaternionW}"></TextBox>
 
                 <Label Grid.Row="7" Content="Origin X"></Label>
@@ -166,25 +166,25 @@
                 <CheckBox Grid.Row="13" Grid.Column="1" IsChecked="{Binding RotationSimulator1.SLERP}"></CheckBox>
 
 
-                <Label  Grid.Column="3" Grid.Row="0" Content="Euler fi0"  Background="DarkKhaki"></Label>
+                <Label  Grid.Column="3" Grid.Row="0" Content="Euler fi"  Background="DarkKhaki"></Label>
                 <TextBox Grid.Column="4" Grid.Row="0" Text="{Binding RotationSimulator1.Cursor1.EulerFi}"></TextBox>
 
-                <Label Grid.Column="3" Grid.Row="1" Content="Euler teta0"  Background="DarkKhaki"></Label>
+                <Label Grid.Column="3" Grid.Row="1" Content="Euler teta"  Background="DarkKhaki"></Label>
                 <TextBox Grid.Column="4" Grid.Row="1" Text="{Binding RotationSimulator1.Cursor1.EulerTeta}"></TextBox>
 
-                <Label Grid.Column="3"  Grid.Row="2" Content="Euler psi0"  Background="DarkKhaki"></Label>
+                <Label Grid.Column="3"  Grid.Row="2" Content="Euler psi"  Background="DarkKhaki"></Label>
                 <TextBox Grid.Column="4" Grid.Row="2" Text="{Binding RotationSimulator1.Cursor1.EulerPsi}"></TextBox>
 
-                <Label Grid.Column="3"  Grid.Row="3" Content="Quaternion0 X"  ></Label>
+                <Label Grid.Column="3"  Grid.Row="3" Content="Quaternion X"  ></Label>
                 <TextBox Grid.Column="4" Grid.Row="3" Text="{Binding RotationSimulator1.Cursor1.QuaternionX}"></TextBox>
 
-                <Label Grid.Column="3"  Grid.Row="4" Content="Quaternion0 Y"  ></Label>
+                <Label Grid.Column="3"  Grid.Row="4" Content="Quaternion Y"  ></Label>
                 <TextBox Grid.Column="4" Grid.Row="4" Text="{Binding RotationSimulator1.Cursor1.QuaternionY}"></TextBox>
 
-                <Label Grid.Column="3" Grid.Row="5" Content="Quaternion0 Z" ></Label>
+                <Label Grid.Column="3" Grid.Row="5" Content="Quaternion Z" ></Label>
                 <TextBox Grid.Column="4" Grid.Row="5" Text="{Binding RotationSimulator1.Cursor1.QuaternionZ}"></TextBox>
 
-                <Label Grid.Column="3" Grid.Row="6" Content="Quaternion0 W" ></Label>
+                <Label Grid.Column="3" Grid.Row="6" Content="Quaternion W" ></Label>
                 <TextBox Grid.Column="4" Grid.Row="6" Text="{Binding RotationSimulator1.Cursor1.QuaternionW}"></TextBox>
 
                 <Label Grid.Column="3"  Grid.Row="7" Content="Origin X"></Label>
