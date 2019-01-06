@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Forms.Integration;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -29,60 +30,73 @@ namespace WpfApp1
             MainViewModel1.RotationSimulator1.OnLoad();
             //var Width = glControl.Width;
             //var Height = glControl.Height;
-            
+
 
             //GL.Viewport(0, 0, Width, Height);
 
             GL.MatrixMode(MatrixMode.Projection);
-           // var p = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)Width / (float)Height, 1.0f, 64.0f);
-           // var p = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)Width / (float)Height, 1.0f, 64.0f);
-            var p = Matrix4.CreateOrthographic(7,7, -100.0f, 664.0f);
+            // var p = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)Width / (float)Height, 1.0f, 64.0f);
+            // var p = Matrix4.CreatePerspectiveFieldOfView(MathHelper.PiOver4, (float)Width / (float)Height, 1.0f, 64.0f);
+            var p = Matrix4.CreateOrthographic(7, 7, -100.0f, 664.0f);
             GL.LoadMatrix(ref p);
 
             GL.MatrixMode(MatrixMode.Modelview);
-            
+
             //var mv = Matrix4.LookAt(Vector3.UnitZ, Vector3.Zero, Vector3.UnitY);
             //GL.LoadMatrix(ref mv);            
 
-            var CameraPosition=new Vector3(0,1,0);
-            var TargetPosition=new Vector3(0,0,0);
-            var UpVectorInWorldSpace=new Vector3(0,1,0);
+            //var CameraPosition = new Vector3(1, 0, 0);
+            //var TargetPosition = new Vector3(0, 0, 0);
+            //var UpVectorInWorldSpace = new Vector3(0, 1, 0);
 
-            var mv = Matrix4.LookAt(CameraPosition, TargetPosition, UpVectorInWorldSpace);
-            GL.LoadMatrix(ref mv);
+            //var mv = Matrix4.LookAt(CameraPosition, TargetPosition, UpVectorInWorldSpace);
+           // GL.LoadMatrix(ref mv);
 
 
-            //GL.Enable(EnableCap.DepthTest);
-            //GL.Enable(EnableCap.Lighting);
-            //GL.Enable(EnableCap.ColorMaterial);
-            //float[] light_position = { 0, 80, 0 };
-            //float[] light_diffuse = { 0.2f, 0.1f, 0.1f };
-            //float[] light_ambient = { 0.2f, 0.1f, 0.1f };
-            //float[] light_specular = { 0.2f, 0.1f, 0.1f };
-            //GL.Light(LightName.Light0, LightParameter.Position, light_position);
-            //GL.Light(LightName.Light0, LightParameter.Diffuse, light_diffuse);
-            //GL.Light(LightName.Light0, LightParameter.Ambient, light_ambient);
-            //GL.Light(LightName.Light0, LightParameter.Specular, light_specular);
 
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.Lighting);
             GL.Enable(EnableCap.ColorMaterial);
-            float[] light_position = { 100, 500, 100 };
-            float[] light_diffuse = { 0.01f, 0.01f, 0.005f };
-            float[] light_ambient = { 0.2f, 0.1f, 0.1f };
-            float[] light_specular = { 0.0f, 0.0f, 0.0f };
-            GL.Light(LightName.Light0, LightParameter.Position, light_position);
-            GL.Light(LightName.Light0, LightParameter.Diffuse, light_diffuse);
-            GL.Light(LightName.Light0, LightParameter.Ambient, light_ambient);
-            GL.Light(LightName.Light0, LightParameter.Specular, light_specular);
-
-            GL.Enable(EnableCap.Light0);
 
 
-           
+            //float[] light_position = { 10.0f, 10.0f, 0.0f };
+            //float[] light_diffuse = { 0.3f, 0.3f, 0.3f, 1.0f };
+            //float[] light_ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
+            //float[] light_specular = { 0.8f, 0.8f, 0.8f, 1.0f };
+
+            float[] light_position = { 0f,0f,0f,0f};
+            float[] light_spot_direction = { 0,0,-1,0};
+            float[] light_diffuse = { 0.3f, 0.3f, 0.3f, 1.0f };
+            //float[] light_ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
+            float[] light_specular = { 0.8f, 0.8f, 0.8f, 1.0f };
+            //GL.Light(LightName.Light0, LightParameter.Position, light_position);
+
+           // GL.Light(LightName.Light0, LightParameter.Diffuse, light_diffuse);
+            //GL.Light(LightName.Light0, LightParameter.Ambient, light_ambient);
+
+           // GL.Light(LightName.Light0, LightParameter.Specular, light_specular);
+
+            //GL.Enable(EnableCap.Light0);
+
+
+
             MainViewModel1.RotationSimulator1.RefreshScene += Scene_RefreshScene;
             MainViewModel1.RotationSimulator1.Cursor0.RefreshScene += Scene_RefreshScene;
             MainViewModel1.RotationSimulator1.Cursor1.RefreshScene += Scene_RefreshScene;
+            MainViewModel1.RotationSimulator1.Puma1.RefreshScene += Scene_RefreshScene;
+
+
+
+            //GL.LightModel(LightModelParameter.LightModelAmbient, new[] { 0.2f, 0.2f, 0.2f, 1.0f });
+            //GL.LightModel(LightModelParameter.LightModelAmbient, new[] { 0.5f, 0.5f, 0.5f, 1.0f });
+            //GL.Light(LightName.Light0, LightParameter.Position, new[] { 0.0f,0.0f, 0.0f});
+            ////GL.Light(LightName.Light0, LightParameter.Ambient, new[] { 0.2f, 0.2f, 0.2f, 1.0f });
+            //GL.Light(LightName.Light0, LightParameter.Diffuse, new[] { 0.3f, 0.3f, 0.3f, 1.0f });
+            //GL.Light(LightName.Light0, LightParameter.Specular, new[] { 0.8f, 0.8f, 0.8f, 1.0f });
+            // GL.Enable(EnableCap.Lighting);
+            GL.Enable(EnableCap.Light0);
+
+            //GL.ShadeModel(ShadingModel.Smooth);
         }
 
         #endregion
@@ -137,9 +151,9 @@ namespace WpfApp1
 
             //  GL.Viewport(0, 0, Width, Height);
 
-            var CameraPosition = new Vector3(0, 0, 8);
+            var CameraPosition = new Vector3(0, -8, 0);
             var TargetPosition = new Vector3(0, 0, 0);
-            var UpVectorInWorldSpace = new Vector3(0, 1, 0);
+            var UpVectorInWorldSpace = new Vector3(0, 0, 1);
             var mv = Matrix4.LookAt(CameraPosition, TargetPosition, UpVectorInWorldSpace);
 
 
@@ -161,13 +175,13 @@ namespace WpfApp1
         {
             if (DateTime.Now.Subtract(lastMeasureTime) > TimeSpan.FromSeconds(1))
             {
-                Title = "PUSN: " + frames + "fps";
+                Title = "Rotation Comparator: " + frames + "fps";
                 frames = 0;
                 lastMeasureTime = DateTime.Now;
             }
             //Refresh();
             // glControl.Invalidate();
-           
+
         }
 
         //void Scene_RefreshScene(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -261,8 +275,8 @@ namespace WpfApp1
 
 
             _alphaX += 16 * 4 * _teta / 1440;
-            _alphaY += 16 * 4 * _fi / 1440;
-            _alphaZ += 0;
+            _alphaZ += 16 * 4 * _fi / 1440;
+            _alphaY += 0;
         }
 
 
@@ -303,7 +317,7 @@ namespace WpfApp1
             return;
         }
 
-        
+
         private void StartSimulation_OnClick(object sender, RoutedEventArgs e)
         {
             MainViewModel1.RotationSimulator1.StartSimulation();
@@ -318,7 +332,7 @@ namespace WpfApp1
             glControl.Invalidate();
         }
 
-       
+
 
 
 

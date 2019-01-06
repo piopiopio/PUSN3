@@ -62,8 +62,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Cursor.cs" />
+    <Compile Include="Cylinder.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="MainViewModel.cs" />
+    <Compile Include="Puma.cs" />
+    <Compile Include="QuaternionHelpers.cs" />
     <Compile Include="RotationSimulator.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">

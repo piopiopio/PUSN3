@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using OpenTK;
@@ -20,8 +21,45 @@ public class RotationSimulator : ViewModelBase
     {
 
     }
+    private Puma _puma = new Puma(new double[] { 1, 1, 1, 99, 99, 99 }, new double[] { 0, Math.PI/4, 0, Math.PI / 4, Math.PI / 4, Math.PI / 4 });
 
+    public Puma Puma1
+    {
+        get { return _puma; }
+        set
+        {
+            _puma = value;
+        }
+    }
     private bool _slerp = false;
+
+    private bool _showCursor = false;
+    public bool ShowCursor
+    {
+        get { return _showCursor; }
+        set
+        {
+            _showCursor = value;
+            OnPropertyChanged(nameof(ShowCursor));
+            Refresh();
+        }
+    }
+
+
+    private bool _showPuma = true;
+    public bool ShowPuma
+    {
+        get
+        {
+            return _showPuma;
+        }
+        set
+        {
+            _showPuma = value;
+            OnPropertyChanged(nameof(ShowPuma));
+            Refresh();
+        }
+    }
 
     public bool SLERP
     {
@@ -58,7 +96,7 @@ public class RotationSimulator : ViewModelBase
 
     }
 
-    private double _simulationTime = 10;
+    private double _simulationTime = 2;
 
     public double SimulationTime
     {
@@ -72,7 +110,7 @@ public class RotationSimulator : ViewModelBase
     }
 
 
-    private int _framesNumber = 10;
+    private int _framesNumber = 100;
 
     public int FramesNumber
     {
@@ -201,28 +239,40 @@ public class RotationSimulator : ViewModelBase
         GL.Scale(Scale, Scale, Scale);
         //GL.Rotate(0, 0, 1, 0);
 
-        Cursor0.Draw(true);
-        Cursor1.Draw(true);
+        if (ShowCursor)
+        {
+            Cursor0.Draw(true);
+            Cursor1.Draw(true);
 
-        Cursor0.Draw(false);
-        Cursor1.Draw(false);
-        if (CurrentCursors.Item1 != null)
-        {
-            CurrentCursors.Item1.Draw(false);
-        }
-        if (CurrentCursors.Item2 != null)
-        {
-            CurrentCursors.Item2.Draw(true);
-        }
-        if (_showAllFrames)
-        {
-            foreach (var item in AnimationFramesList)
+            Cursor0.Draw(false);
+            Cursor1.Draw(false);
+
+
+            if (CurrentCursors.Item1 != null)
             {
-                item.Item1.Draw(false);
-                item.Item2.Draw(true);
+                CurrentCursors.Item1.Draw(false);
             }
+
+            if (CurrentCursors.Item2 != null)
+            {
+                CurrentCursors.Item2.Draw(true);
+            }
+
+            if (_showAllFrames)
+            {
+                foreach (var item in AnimationFramesList)
+                {
+                    item.Item1.Draw(false);
+                    item.Item2.Draw(true);
+                }
+            }
+
         }
 
+        if (ShowPuma)
+        {
+            _puma.Draw();
+        }
     }
 
 
@@ -292,14 +342,14 @@ public class RotationSimulator : ViewModelBase
         else
         {
             Cursor1.ConditionEndQuaternionToNearer(Cursor0);
-           //var debug= Vector4d.Dot(Cursor0._quaternion, Cursor1._quaternion);
-           
+            //var debug= Vector4d.Dot(Cursor0._quaternion, Cursor1._quaternion);
+
             SimulationResultButtonIsEnabled = false;
             SimulationStartButtonIsEnabled = false;
             LoadPathButtonIsEnabled = false;
             StepNumber = 0;
 
-            timer = new DispatcherTimer();
+            timer = new DispatcherTimer(DispatcherPriority.Render);
             //timer.Interval = TimeSpan.FromMilliseconds(30);
             timer.Interval = TimeSpan.FromSeconds(_simulationTime / (_framesNumber - 1));
             timer.Tick += TimerOnTick;
@@ -357,7 +407,7 @@ public class RotationSimulator : ViewModelBase
 
             CurrentCursors = new Tuple<Cursor, Cursor>(CursorAngleByEuler(Cursor0, Cursor1, a), CursorAngleByQuaternion(Cursor0, Cursor1, a, _slerp));
             // CurrentCursor = AnimationFramesList[StepNumber];
-           
+
         }
         Refresh();
         // }
@@ -383,10 +433,21 @@ public class RotationSimulator : ViewModelBase
         var temp = new Cursor();
         if (slerp)
         {
-            var alpha = Math.Acos(StartCursor._quaternion.X * EndCursor._quaternion.X + StartCursor._quaternion.Y * EndCursor._quaternion.Y + StartCursor._quaternion.Z * EndCursor._quaternion.Z + StartCursor._quaternion.W * EndCursor._quaternion.W);
+            var alpha = Math.Acos(StartCursor._quaternion.X * EndCursor._quaternion.X +
+                                  StartCursor._quaternion.Y * EndCursor._quaternion.Y +
+                                  StartCursor._quaternion.Z * EndCursor._quaternion.Z +
+                                  StartCursor._quaternion.W * EndCursor._quaternion.W);
 
-            temp._quaternion = StartCursor._quaternion * Math.Sin((1 - AnimationProgress) * alpha) / Math.Sin(alpha) +
-                               EndCursor._quaternion * Math.Sin(AnimationProgress * alpha) / Math.Sin(alpha);
+            if (Math.Abs(alpha) < 0.001)
+            {
+                temp._quaternion = StartCursor._quaternion;
+            }
+            else
+            {
+                temp._quaternion =
+                    StartCursor._quaternion * Math.Sin((1 - AnimationProgress) * alpha) / Math.Sin(alpha) +
+                    EndCursor._quaternion * Math.Sin(AnimationProgress * alpha) / Math.Sin(alpha);
+            }
         }
         else
         {
@@ -414,20 +475,28 @@ public class RotationSimulator : ViewModelBase
     private bool pauseSimulationFlag = false;
     public void PauseSimulation()
     {
-        
+
         pauseSimulationFlag = true;
-        timer.Stop();
+        if (timer != null)
+        {
+            timer.Stop();
+        }
         SimulationStartButtonIsEnabled = true;
     }
 
     public void StopSimulation()
     {
 
-        timer.Stop();
+        if (timer != null)
+        {
+            timer.Stop();
+        }
         pauseSimulationFlag = false;
         CurrentCursors = new Tuple<Cursor, Cursor>(null, null);
         Refresh();
         SimulationStartButtonIsEnabled = true;
     }
+
+
 
 }
