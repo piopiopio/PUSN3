@@ -11,7 +11,7 @@ namespace WpfApp1
 {
     public class Puma : Cursor
     {
-        private const int DegreesOfFreedom = 6;
+        private const int DegreesOfFreedom = 7;
         // private Vector3d[] PumaPointsList = new Vector3d[DegreesOfFreedom + 1];
         private double[] PumaArmsLengths = new double[DegreesOfFreedom];
         private double[] PumaJointAngles = new double[DegreesOfFreedom];
@@ -95,6 +95,20 @@ namespace WpfApp1
             }
         }
 
+
+        public double PrysmaticQ
+        {
+            get { return PumaArmsLengths[1]; }
+            set
+            {
+                PumaArmsLengths[1] = value;
+                OnPropertyChanged(nameof(PrysmaticQ));
+                CalculateKinematics();
+                Refresh();
+
+            }
+        }
+
         public Puma(double[] _pumaArmsLengths, double[] _pumaJointAngles)
         {
             PumaArmsLengths = _pumaArmsLengths;
@@ -145,12 +159,14 @@ namespace WpfApp1
 
         void CalculateKinematics()
         {
-            DHdescription[0] = new Vector4d(PumaJointAngles[0], PumaArmsLengths[0], 0, Math.PI / 2);
-            DHdescription[1] = new Vector4d(PumaJointAngles[1] + Math.PI / 2, 0, PumaArmsLengths[1], 0);
+            DHdescription[0] = new Vector4d(PumaJointAngles[0], PumaArmsLengths[0], 0, -Math.PI / 2);
+            DHdescription[1] = new Vector4d(PumaJointAngles[1] - Math.PI / 2, 0, PumaArmsLengths[1], 0);
             DHdescription[2] = new Vector4d(PumaJointAngles[2], 0, PumaArmsLengths[2], 0);
-            DHdescription[3] = new Vector4d(PumaJointAngles[3], 0, 0, -Math.PI / 2);
-            DHdescription[4] = new Vector4d(PumaJointAngles[4] + Math.PI / 2, 0, 0, Math.PI / 2);
-            DHdescription[5] = new Vector4d(PumaJointAngles[5] - Math.PI / 2, 0, 0, 0);
+            DHdescription[3]=new Vector4d(Math.PI/2,0,0,Math.PI/2);
+            DHdescription[4] = new Vector4d(PumaJointAngles[3], 0, PumaArmsLengths[3], +Math.PI/2);
+            DHdescription[5] = new Vector4d(Math.PI/2, 0, 0,Math.PI/2);
+            DHdescription[6] = new Vector4d(PumaJointAngles[4] , 0, 0,0);
+          //  DHdescription[5] = new Vector4d(PumaJointAngles[5] - Math.PI / 2, 0, 0, 0);
             Matrix4d Tn = Matrix4d.Identity;
             for (int i = 0; i < DegreesOfFreedom; i++)
             {

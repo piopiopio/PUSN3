@@ -21,7 +21,7 @@ public class RotationSimulator : ViewModelBase
     {
 
     }
-    private Puma _puma = new Puma(new double[] { 1, 1, 1, 99, 99, 99 }, new double[] { 0, Math.PI/4, 0, Math.PI / 4, Math.PI / 4, Math.PI / 4 });
+    private Puma _puma = new Puma(new double[] { 1, 1, 1, 1, 99, 99 }, new double[] { 0, 0,0, 0, 0,0 });
 
     public Puma Puma1
     {
