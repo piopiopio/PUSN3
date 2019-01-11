@@ -23,7 +23,7 @@ namespace WpfApp1
 
 
 
-            var timer = new DispatcherTimer();
+            var timer = new DispatcherTimer(DispatcherPriority.Render);
             timer.Interval = TimeSpan.FromMilliseconds(1);
             timer.Tick += TimerOnTick;
             timer.Start();

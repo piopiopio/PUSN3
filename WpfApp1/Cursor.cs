@@ -264,8 +264,7 @@ namespace WpfApp1
                 {
                     //GL.Vertex3(Origin - OriginOffset);
                     //GL.Vertex3(Origin - OriginOffset + (RotateZMatrix(EulerAngles.X) * RotateYMatrix(EulerAngles.Y) * RotateXMatrix(EulerAngles.Z)).Multiply(Axis[i]));
-
-
+                    
                     GL.Color3(AxisColors[i].X, AxisColors[i].Y, AxisColors[i].Z);
 
                     var start = Origin - OriginOffset;
@@ -361,6 +360,8 @@ namespace WpfApp1
             // result.Transpose();
             return result;
         }
+
+
     }
 }
 

@@ -21,7 +21,7 @@ public class RotationSimulator : ViewModelBase
     {
 
     }
-    private Puma _puma = new Puma(new double[] { 1, 1, 1, 1, 99, 99 }, new double[] { 0, 0,0, 0, 0,0 });
+    private Puma _puma = new Puma(new double[] { 1, 2, 1, 1, 99, 99 }, new double[] { Math.PI/6, -Math.PI / 6, Math.PI / 6, -Math.PI / 6, Math.PI / 6, Math.PI / 6 });
 
     public Puma Puma1
     {
@@ -481,7 +481,11 @@ public class RotationSimulator : ViewModelBase
         {
             timer.Stop();
         }
+
         SimulationStartButtonIsEnabled = true;
+
+            SimulationStartButtonIsEnabled = true;
+
     }
 
     public void StopSimulation()

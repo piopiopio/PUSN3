@@ -23,5 +23,6 @@ namespace WpfApp1
                 v.X * m.M21 + v.Y * m.M22 + v.Z * m.M23,
                 v.X * m.M31 + v.Y * m.M32 + v.Z * m.M33);
         }
+
     }
 }

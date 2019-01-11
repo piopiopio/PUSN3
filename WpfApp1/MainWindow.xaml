@@ -180,12 +180,13 @@
                 <CheckBox Grid.Row="15" Grid.Column="1" IsChecked="{Binding RotationSimulator1.ShowPuma}"></CheckBox>
 
 
+                
                 <Slider Grid.Row="16" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.Theta0}" Minimum="-6.3" Maximum="6.3" ></Slider>
                 <Slider Grid.Row="17" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.Theta1}" Minimum="-6.3" Maximum="6.3" ></Slider>
                 <Slider Grid.Row="18" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.Theta2}" Minimum="-6.3" Maximum="6.3" ></Slider>
                 <Slider Grid.Row="19" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.Theta3}" Minimum="-6.3" Maximum="6.3" ></Slider>
                 <Slider Grid.Row="20" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.Theta4}" Minimum="-6.3" Maximum="6.3" ></Slider>
-                <Slider Grid.Row="21" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.PrysmaticQ}" Minimum="0" Maximum="4" ></Slider>
+                <Slider Grid.Row="21" Grid.Column="1"  Value="{Binding RotationSimulator1.Puma1.PrysmaticQ}" Minimum="0" Maximum="4" ></Slider>
 
                 <Label  Grid.Column="3" Grid.Row="0" Content="Euler fi"  Background="DarkKhaki"></Label>
                 <TextBox Grid.Column="4" Grid.Row="0" Text="{Binding RotationSimulator1.Cursor1.EulerFi}"></TextBox>
