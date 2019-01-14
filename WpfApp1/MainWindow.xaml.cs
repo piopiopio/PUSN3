@@ -50,7 +50,7 @@ namespace WpfApp1
             //var UpVectorInWorldSpace = new Vector3(0, 1, 0);
 
             //var mv = Matrix4.LookAt(CameraPosition, TargetPosition, UpVectorInWorldSpace);
-           // GL.LoadMatrix(ref mv);
+            // GL.LoadMatrix(ref mv);
 
 
 
@@ -64,17 +64,17 @@ namespace WpfApp1
             //float[] light_ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
             //float[] light_specular = { 0.8f, 0.8f, 0.8f, 1.0f };
 
-            float[] light_position = { 0f,0f,0f,0f};
-            float[] light_spot_direction = { 0,0,-1,0};
+            float[] light_position = { 0f, 0f, 0f, 0f };
+            float[] light_spot_direction = { 0, 0, -1, 0 };
             float[] light_diffuse = { 0.3f, 0.3f, 0.3f, 1.0f };
             //float[] light_ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
             float[] light_specular = { 0.8f, 0.8f, 0.8f, 1.0f };
             //GL.Light(LightName.Light0, LightParameter.Position, light_position);
 
-           // GL.Light(LightName.Light0, LightParameter.Diffuse, light_diffuse);
+            // GL.Light(LightName.Light0, LightParameter.Diffuse, light_diffuse);
             //GL.Light(LightName.Light0, LightParameter.Ambient, light_ambient);
 
-           // GL.Light(LightName.Light0, LightParameter.Specular, light_specular);
+            // GL.Light(LightName.Light0, LightParameter.Specular, light_specular);
 
             //GL.Enable(EnableCap.Light0);
 
@@ -194,6 +194,7 @@ namespace WpfApp1
         {
             MainViewModel1.RotationSimulator1.GenerateAnimationFrames(MainViewModel1.RotationSimulator1.SimulationTime,
                 MainViewModel1.RotationSimulator1.FramesNumber);
+
             Refresh();
 
             //glControl.Invalidate();
@@ -259,6 +260,30 @@ namespace WpfApp1
                     MainViewModel1.RotationSimulator1.Scale += 100 / 1000.0;
                     Refresh();
                     break;
+                case Key.Left:
+                    MainViewModel1.RotationSimulator1.TargetPosition =
+                        MainViewModel1.RotationSimulator1.TargetPosition + new Vector3d(-0.1, 0, 0);
+                    break;
+                case Key.Right:
+                    MainViewModel1.RotationSimulator1.TargetPosition =
+                        MainViewModel1.RotationSimulator1.TargetPosition + new Vector3d(0.1, 0, 0);
+                    break;
+                case Key.Up:
+                    MainViewModel1.RotationSimulator1.TargetPosition =
+                        MainViewModel1.RotationSimulator1.TargetPosition + new Vector3d(0, 0.1, 0);
+                    break;
+                case Key.Down:
+                    MainViewModel1.RotationSimulator1.TargetPosition =
+                        MainViewModel1.RotationSimulator1.TargetPosition + new Vector3d(0, -0.1, 0);
+                    break;
+                case Key.PageDown:
+                    MainViewModel1.RotationSimulator1.TargetPosition =
+                        MainViewModel1.RotationSimulator1.TargetPosition + new Vector3d(0, 0, -0.1);
+                    break;
+                case Key.PageUp:
+                    MainViewModel1.RotationSimulator1.TargetPosition =
+                        MainViewModel1.RotationSimulator1.TargetPosition + new Vector3d(0, 0, 0.1);
+                    break;
             }
         }
 
@@ -317,6 +342,12 @@ namespace WpfApp1
             return;
         }
 
+
+        private void ApplyPumaConfiguration_OnClick(object sender, RoutedEventArgs e)
+        {
+            MainViewModel1.RotationSimulator1.PumaSetUpEffector();
+            Refresh();
+        }
 
         private void StartSimulation_OnClick(object sender, RoutedEventArgs e)
         {

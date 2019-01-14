@@ -42,8 +42,8 @@ namespace WpfApp1
                 (q1.W * q2.W - q1.X * q2.X - q1.Y * q2.Y - q1.Z * q2.Z)
             );
 
-            //(q1.W * wk.Z + q1.X * wk.Y −q1.Y* wk.X + q1.Z * wk.W),
-            //        (q1.W* wk.W − q1.X* wk.X − q1.Y* wk.Y −q1.Z* wk.Z)
+            //(q1.W * wk.Z0 + q1.X0 * wk.Y0 −q1.Y0* wk.X0 + q1.Z0 * wk.W),
+            //        (q1.W* wk.W − q1.X0* wk.X0 − q1.Y0* wk.Y0 −q1.Z0* wk.Z0)
             //            //);
 
             return temp;

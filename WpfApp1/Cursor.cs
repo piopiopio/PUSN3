@@ -12,8 +12,8 @@ namespace WpfApp1
     {
 
 
-        public Vector3d Origin;
-        Vector3d OriginOffset = new Vector3d(1.5, 0, 0);
+
+        public Vector3d OriginOffset = new Vector3d(1.5, 0, 0);
         private Vector3d[] Axis = new Vector3d[3] { new Vector3d(axisLength, 0, 0), new Vector3d(0, axisLength, 0), new Vector3d(0, 0, axisLength) };
 
 
@@ -22,6 +22,7 @@ namespace WpfApp1
         //Euler ZYX
         public Vector3d EulerAngles = new Vector3d();
 
+        public Vector3d Origin;
         public double X
         {
             get => Origin.X;
@@ -202,12 +203,12 @@ namespace WpfApp1
         public void Draw(Matrix3d Tn)
         {
 
-            //GL.Color3(AxisColors[i].X, AxisColors[i].Y, AxisColors[i].Z);
+            //GL.Color3(AxisColors[i].X0, AxisColors[i].Y0, AxisColors[i].Z0);
             for (int i = 0; i < Axis.Length; i++)
             {
 
-                // GL.Vertex3(Origin + OriginOffset);
-                //GL.Vertex3(Origin + OriginOffset + RotateXMatrix(EulerAngles.X).Multiply(Axis[i]));
+                // GL.Vertex3(Origin0 + OriginOffset);
+                //GL.Vertex3(Origin0 + OriginOffset + RotateXMatrix(EulerAngles.X0).Multiply(Axis[i]));
 
 
                 var start = Origin;
@@ -238,12 +239,12 @@ namespace WpfApp1
 
             for (int i = 0; i < Axis.Length; i++)
             {
-                //GL.Color3(AxisColors[i].X, AxisColors[i].Y, AxisColors[i].Z);
+                //GL.Color3(AxisColors[i].X0, AxisColors[i].Y0, AxisColors[i].Z0);
                 if (quaternionSideOfScreen)
                 {
 
-                    // GL.Vertex3(Origin + OriginOffset);
-                    //GL.Vertex3(Origin + OriginOffset + RotateXMatrix(EulerAngles.X).Multiply(Axis[i]));
+                    // GL.Vertex3(Origin0 + OriginOffset);
+                    //GL.Vertex3(Origin0 + OriginOffset + RotateXMatrix(EulerAngles.X0).Multiply(Axis[i]));
                     var start = Origin + OriginOffset;
                     var a = QuaternionHelpers.HamiltonProduct(_quaternion, QuaternionHelpers.AxisVectorToQuaternion(Axis[i]));
                     a = QuaternionHelpers.HamiltonProduct(a, QuaternionHelpers.ConjugatedQuaternion(_quaternion));
@@ -262,8 +263,8 @@ namespace WpfApp1
 
                 else
                 {
-                    //GL.Vertex3(Origin - OriginOffset);
-                    //GL.Vertex3(Origin - OriginOffset + (RotateZMatrix(EulerAngles.X) * RotateYMatrix(EulerAngles.Y) * RotateXMatrix(EulerAngles.Z)).Multiply(Axis[i]));
+                    //GL.Vertex3(Origin0 - OriginOffset);
+                    //GL.Vertex3(Origin0 - OriginOffset + (RotateZMatrix(EulerAngles.X0) * RotateYMatrix(EulerAngles.Y0) * RotateXMatrix(EulerAngles.Z0)).Multiply(Axis[i]));
                     
                     GL.Color3(AxisColors[i].X, AxisColors[i].Y, AxisColors[i].Z);
 

@@ -17,20 +17,147 @@ using Cursor = WpfApp1.Cursor;
 public class RotationSimulator : ViewModelBase
 {
 
+    Cursor _cursor0 = new Cursor(new Vector3d(0, -2, 0));
+
+    public Cursor Cursor0
+    {
+        get { return _cursor0; }
+        set
+        {
+            _cursor0 = value;
+            OnPropertyChanged(nameof(Cursor0));
+            
+        }
+    }
+
+    Cursor _cursor1 = new Cursor(new Vector3d(0, 2, 0));
+    public Cursor Cursor1
+    {
+        get { return _cursor1; }
+        set
+        {
+            _cursor1 = value;
+            OnPropertyChanged(nameof(Cursor1));
+
+        }
+    }
+
+
+    //public Vector3d _X5 = new Vector3d(1, 0, 0);
+
+    //public Vector3d Origin0= new Vector3d(2, 0, 0);
+    //public double X0
+    //{
+    //    get => Origin0.X;
+    //    set
+    //    {
+
+    //        Origin0.X = value;
+    //        OnPropertyChanged(nameof(X0));
+    //        Cursor0.Origin = Origin0;
+    //        Puma1.SetUpEffector(_cursor0.Origin, _cursor1.Origin);
+    //        Refresh();
+    //    }
+    //}
+
+    //public double Y0
+    //{
+    //    get => Origin0.Y;
+    //    set
+    //    {
+    //        Origin0.Y = value;
+    //        OnPropertyChanged(nameof(Y0));
+    //        Cursor0.Origin = Origin0;
+    //        Puma1.SetUpEffector(_cursor0.Origin, _cursor1.Origin);
+    //        Refresh();
+    //    }
+    //}
+
+    //public double Z0
+    //{
+    //    get => Origin0.Z;
+    //    set
+    //    {
+    //        Origin0.Z = value;
+    //        OnPropertyChanged(nameof(Z0));
+    //        Cursor0.Origin = Origin0;
+    //        Puma1.SetUpEffector(_cursor0.Origin, _cursor1.Origin);
+    //        Refresh();
+    //    }
+    //}
+
+    //public Vector3d Origin1 = new Vector3d(2, 0, 0);
+    //public double X1
+    //{
+    //    get => Origin1.X;
+    //    set
+    //    {
+
+    //        Origin1.X = value;
+    //        OnPropertyChanged(nameof(X1));
+    //        Cursor1.Origin = Origin1;
+    //        Puma1.SetUpEffector(_cursor0.Origin, _cursor1.Origin);
+    //        Refresh();
+    //    }
+    //}
+
+    //public double Y1
+    //{
+    //    get => Origin1.Y;
+    //    set
+    //    {
+    //        Origin1.Y = value;
+    //        OnPropertyChanged(nameof(Y1));
+    //        Cursor1.Origin = Origin1;
+    //        Puma1.SetUpEffector(_cursor0.Origin, _cursor1.Origin);
+    //        Refresh();
+    //    }
+    //}
+
+    //public double Z1
+    //{
+    //    get => Origin1.Z;
+    //    set
+    //    {
+    //        Origin1.Z = value;
+    //        OnPropertyChanged(nameof(Z1));
+    //        Cursor1.Origin = Origin1;
+    //        Puma1.SetUpEffector(_cursor0.Origin, _cursor1.Origin);
+    //        Refresh();
+    //    }
+    //}
+    public void PumaSetUpEffector()
+    {
+        Puma1.SetUpEffector(_cursor0._quaternion, _cursor0.Origin, _cursor1._quaternion, _cursor1.Origin );
+        Puma2.SetUpEffector(_cursor0._quaternion, _cursor0.Origin, _cursor1._quaternion, _cursor1.Origin );
+    }
+
     public RotationSimulator(GLControl _glControl, GLControl _glControl1)
     {
 
     }
-    private Puma _puma = new Puma(new double[] { 1, 2, 1, 1, 99, 99 }, new double[] { Math.PI/6, -Math.PI / 6, Math.PI / 6, -Math.PI / 6, Math.PI / 6, Math.PI / 6 });
+    private Puma _puma1 = new Puma(new double[] { 1, 2, 1, 1, 99, 99 }, new double[] { Math.PI/6, -Math.PI / 6, Math.PI / 6, -Math.PI / 6, Math.PI / 6, Math.PI / 6 }, new Vector3d(-1.5,0,0),new Vector3d(0,1,0) );
 
     public Puma Puma1
     {
-        get { return _puma; }
+        get { return _puma1; }
         set
         {
-            _puma = value;
+            _puma1 = value;
         }
     }
+
+    private Puma _puma2 = new Puma(new double[] { 1, 2, 1, 1, 99, 99 }, new double[] { Math.PI / 6, -Math.PI / 6, Math.PI / 6, -Math.PI / 6, Math.PI / 6, Math.PI / 6 }, new Vector3d(1.5, 0, 0), new Vector3d(0, 0, 1));
+
+    public Puma Puma2
+    {
+        get { return _puma2; }
+        set
+        {
+            _puma2 = value;
+        }
+    }
+
     private bool _slerp = false;
 
     private bool _showCursor = false;
@@ -178,8 +305,7 @@ public class RotationSimulator : ViewModelBase
         }
     }
 
-    public Cursor Cursor0 { get; set; } = new Cursor(new Vector3d(0, -2, 0));
-    public Cursor Cursor1 { get; set; } = new Cursor(new Vector3d(0, 2, 0));
+
 
 
 
@@ -201,6 +327,8 @@ public class RotationSimulator : ViewModelBase
     {
         //Material1.OnUpdateFrame();
         //Cutter1.OnUpdateFrame();
+
+       
 
     }
 
@@ -271,7 +399,8 @@ public class RotationSimulator : ViewModelBase
 
         if (ShowPuma)
         {
-            _puma.Draw();
+            _puma1.Draw();
+            _puma2.Draw();
         }
     }
 
@@ -332,6 +461,9 @@ public class RotationSimulator : ViewModelBase
     }
     public void StartSimulation()
     {
+        Puma1.SetUpEffector( Cursor0._quaternion, Cursor0.Origin, Cursor1._quaternion, Cursor1.Origin );
+        Puma2.SetUpEffector( Cursor0._quaternion, Cursor0.Origin, Cursor1._quaternion, Cursor1.Origin );
+
         SimulationStartButtonIsEnabled = false;
 
         if (pauseSimulationFlag)
@@ -375,7 +507,7 @@ public class RotationSimulator : ViewModelBase
             double a = ((double)(framesNumber - i) / framesNumber);
             //double b = ((double)i / framesNumber);
             //temp.EulerAngles = a * Cursor0.EulerAngles + b * Cursor1.EulerAngles;
-            //temp.Origin = a * Cursor0.Origin + b * Cursor1.Origin;
+            //temp.Origin0 = a * Cursor0.Origin0 + b * Cursor1.Origin0;
 
             //AnimationFramesList.Add(temp);
             AnimationFramesList.Add(new Tuple<Cursor, Cursor>(CursorAngleByEuler(Cursor0, Cursor1, a), CursorAngleByQuaternion(Cursor0, Cursor1, a, _slerp)));
@@ -409,6 +541,10 @@ public class RotationSimulator : ViewModelBase
             // CurrentCursor = AnimationFramesList[StepNumber];
 
         }
+
+        Puma2.PumaNextFrameMoveExternalInterpolation(a);
+        Puma1.PumaNextFrameMoveInternalInterpolation(a);
+
         Refresh();
         // }
 
@@ -471,6 +607,19 @@ public class RotationSimulator : ViewModelBase
             Refresh();
         }
     }
+
+
+    public Vector3d TargetPosition {
+        get { return _puma1._P5_0; }
+        set
+        {
+            _puma1._P5_0 = value; 
+            _puma2._P5_0 = value; 
+            _puma1.CalculateInverseKinematics(_puma1._X5, _puma1._P5_0, _puma1._Z5);
+            _puma2.CalculateInverseKinematics(_puma1._X5, _puma1._P5_0, _puma1._Z5);
+            Refresh();
+
+        } }
 
     private bool pauseSimulationFlag = false;
     public void PauseSimulation()

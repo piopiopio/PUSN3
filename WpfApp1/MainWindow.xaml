@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         
-        Title="Rotations comparator" WindowState="Maximized" MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseWheel="Window_MouseWheel" KeyDown="MainWindow_OnKeyDown">
+        Title="Rotations comparator" WindowState="Maximized" MouseDown="Window_MouseDown" MouseMove="Window_MouseMove" MouseWheel="Window_MouseWheel" PreviewKeyDown="MainWindow_OnKeyDown">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -61,15 +61,17 @@
 
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
 
 
 
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0" Content="Start simulation" Name="StartSimulation" Click="StartSimulation_OnClick" IsEnabled="{Binding RotationSimulator1.SimulationStartButtonIsEnabled}"></Button>
-                <Button Grid.Column="1" Content="Pause simulation" Name="PauseSimulation" Click="PauseSimulation_OnClickSimulation_OnClick_imulation_OnClick"></Button>
-                <Button Grid.Column="2" Content="Stop simulation" Name="StopSimulation" Click="StopSimulation_OnClick_imulation_OnClick"></Button>
-                <Button Grid.Column="3" Content="Default view" Name="DefaultView" Click="DefaultView_OnClick"></Button>
+                <Button Grid.Column="0" Content="Apply Configuration" Name="ApplyPumaConfiguration" Click="ApplyPumaConfiguration_OnClick" IsEnabled="{Binding RotationSimulator1.SimulationStartButtonIsEnabled}"></Button>
+                <Button Grid.Column="1" Content="Start simulation" Name="StartSimulation" Click="StartSimulation_OnClick" IsEnabled="{Binding RotationSimulator1.SimulationStartButtonIsEnabled}"></Button>
+                <Button Grid.Column="2" Content="Pause simulation" Name="PauseSimulation" Click="PauseSimulation_OnClickSimulation_OnClick_imulation_OnClick"></Button>
+                <Button Grid.Column="3" Content="Stop simulation" Name="StopSimulation" Click="StopSimulation_OnClick_imulation_OnClick"></Button>
+                <Button Grid.Column="4" Content="Default view" Name="DefaultView" Click="DefaultView_OnClick"></Button>
 
                 <!--<Button Grid.Column="3"></Button>
                     <Button Grid.Column="4"></Button>
@@ -140,25 +142,25 @@
                 <Label Grid.Row="2" Content="Euler psi"  Background="DarkKhaki"></Label>
                 <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding RotationSimulator1.Cursor0.EulerPsi}"></TextBox>
 
-                <Label Grid.Row="3" Content="Quaternion X"  ></Label>
+                <Label Grid.Row="3" Content="Quaternion X0"  ></Label>
                 <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding RotationSimulator1.Cursor0.QuaternionX}"></TextBox>
 
-                <Label Grid.Row="4" Content="Quaternion Y"  ></Label>
+                <Label Grid.Row="4" Content="Quaternion Y0"  ></Label>
                 <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding RotationSimulator1.Cursor0.QuaternionY}"></TextBox>
 
-                <Label Grid.Row="5" Content="Quaternion Z" ></Label>
+                <Label Grid.Row="5" Content="Quaternion Z0" ></Label>
                 <TextBox Grid.Column="1" Grid.Row="5" Text="{Binding RotationSimulator1.Cursor0.QuaternionZ}"></TextBox>
 
                 <Label Grid.Row="6" Content="Quaternion W" ></Label>
                 <TextBox Grid.Column="1" Grid.Row="6" Text="{Binding RotationSimulator1.Cursor0.QuaternionW}"></TextBox>
 
-                <Label Grid.Row="7" Content="Origin X"></Label>
+                <Label Grid.Row="7" Content="Origin0 X0"></Label>
                 <TextBox Grid.Column="1" Grid.Row="7" Text="{Binding RotationSimulator1.Cursor0.X}"></TextBox>
 
-                <Label Grid.Row="8" Content="Origin Y"  ></Label>
+                <Label Grid.Row="8" Content="Origin0 Y0"  ></Label>
                 <TextBox Grid.Column="1" Grid.Row="8" Text="{Binding RotationSimulator1.Cursor0.Y}"></TextBox>
 
-                <Label Grid.Row="9" Content="Origin Z" Grid.ColumnSpan="2" ></Label>
+                <Label Grid.Row="9" Content="Origin0 Z0" Grid.ColumnSpan="2" ></Label>
                 <TextBox Grid.Column="1" Grid.Row="9" Text="{Binding RotationSimulator1.Cursor0.Z}"></TextBox>
 
                 <Label Grid.Row="10" Content="Animation time" ></Label>
@@ -181,12 +183,12 @@
 
 
                 
-                <Slider Grid.Row="16" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.Theta0}" Minimum="-6.3" Maximum="6.3" ></Slider>
+                <!--<Slider Grid.Row="16" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.Theta0}" Minimum="-6.3" Maximum="6.3" ></Slider>
                 <Slider Grid.Row="17" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.Theta1}" Minimum="-6.3" Maximum="6.3" ></Slider>
                 <Slider Grid.Row="18" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.Theta2}" Minimum="-6.3" Maximum="6.3" ></Slider>
                 <Slider Grid.Row="19" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.Theta3}" Minimum="-6.3" Maximum="6.3" ></Slider>
                 <Slider Grid.Row="20" Grid.Column="1" Value="{Binding RotationSimulator1.Puma1.Theta4}" Minimum="-6.3" Maximum="6.3" ></Slider>
-                <Slider Grid.Row="21" Grid.Column="1"  Value="{Binding RotationSimulator1.Puma1.PrysmaticQ}" Minimum="0" Maximum="4" ></Slider>
+                <Slider Grid.Row="21" Grid.Column="1"  Value="{Binding RotationSimulator1.Puma1.PrysmaticQ}" Minimum="0" Maximum="4" ></Slider>-->
 
                 <Label  Grid.Column="3" Grid.Row="0" Content="Euler fi"  Background="DarkKhaki"></Label>
                 <TextBox Grid.Column="4" Grid.Row="0" Text="{Binding RotationSimulator1.Cursor1.EulerFi}"></TextBox>
@@ -197,25 +199,25 @@
                 <Label Grid.Column="3"  Grid.Row="2" Content="Euler psi"  Background="DarkKhaki"></Label>
                 <TextBox Grid.Column="4" Grid.Row="2" Text="{Binding RotationSimulator1.Cursor1.EulerPsi}"></TextBox>
 
-                <Label Grid.Column="3"  Grid.Row="3" Content="Quaternion X"  ></Label>
+                <Label Grid.Column="3"  Grid.Row="3" Content="Quaternion X0"  ></Label>
                 <TextBox Grid.Column="4" Grid.Row="3" Text="{Binding RotationSimulator1.Cursor1.QuaternionX}"></TextBox>
 
-                <Label Grid.Column="3"  Grid.Row="4" Content="Quaternion Y"  ></Label>
+                <Label Grid.Column="3"  Grid.Row="4" Content="Quaternion Y0"  ></Label>
                 <TextBox Grid.Column="4" Grid.Row="4" Text="{Binding RotationSimulator1.Cursor1.QuaternionY}"></TextBox>
 
-                <Label Grid.Column="3" Grid.Row="5" Content="Quaternion Z" ></Label>
+                <Label Grid.Column="3" Grid.Row="5" Content="Quaternion Z0" ></Label>
                 <TextBox Grid.Column="4" Grid.Row="5" Text="{Binding RotationSimulator1.Cursor1.QuaternionZ}"></TextBox>
 
                 <Label Grid.Column="3" Grid.Row="6" Content="Quaternion W" ></Label>
                 <TextBox Grid.Column="4" Grid.Row="6" Text="{Binding RotationSimulator1.Cursor1.QuaternionW}"></TextBox>
 
-                <Label Grid.Column="3"  Grid.Row="7" Content="Origin X"></Label>
+                <Label Grid.Column="3"  Grid.Row="7" Content="Origin0 X0"></Label>
                 <TextBox Grid.Column="4" Grid.Row="7" Text="{Binding RotationSimulator1.Cursor1.X}"></TextBox>
 
-                <Label Grid.Column="3" Grid.Row="8" Content="Origin Y"  ></Label>
+                <Label Grid.Column="3" Grid.Row="8" Content="Origin0 Y0"  ></Label>
                 <TextBox Grid.Column="4" Grid.Row="8" Text="{Binding RotationSimulator1.Cursor1.Y}"></TextBox>
 
-                <Label Grid.Column="3"  Grid.Row="9" Content="Origin Z" Grid.ColumnSpan="2" ></Label>
+                <Label Grid.Column="3"  Grid.Row="9" Content="Origin0 Z0" Grid.ColumnSpan="2" ></Label>
                 <TextBox Grid.Column="4" Grid.Row="9" Text="{Binding RotationSimulator1.Cursor1.Z}"></TextBox>
 
 
@@ -223,7 +225,9 @@
 
 
         </Grid>
-        <WindowsFormsHost Grid.Column="0"  Grid.Row="0" Name="OpentkWindow"  Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsEnabled="False" Initialized="OpentkWindow_OnInitialized" />
+        <WindowsFormsHost Grid.Column="0"  Grid.Row="0" Name="OpentkWindow"  Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" 
+                          HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsEnabled="False" Initialized="OpentkWindow_OnInitialized" 
+                          />
 
 
 
